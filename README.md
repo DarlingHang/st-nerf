@@ -48,6 +48,8 @@ python demo/taekwondo_demo.py -c configs/config_walking.yml
 ```
 - The rendered images and videos will be under `outputs/taekwondo/rendered` and `outputs/walking/rendered`
 
+## Acknowlegements
+We borrowed some codes from [Multi-view Neural Human Rendering (NHR)](https://github.com/wuminye/NHR).
 
 ## Citation
 If you use this code for your research, please cite our papers.
