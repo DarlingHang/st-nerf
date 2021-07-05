@@ -18,10 +18,15 @@ git clone https://github.com/DarlingHang/ST-NeRF
 cd ST-NeRF
 ```
 
-- Install [PyTorch](http://pytorch.org) and other dependencies. You can create a new Conda environment using: 
+- Install [PyTorch](http://pytorch.org) and other dependencies using: 
 ```
-conda env create -f environment.yml
+conda create -n ST-NeRF python=3.8.5
+conda activate ST-NeRF    
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+conda install imageio matplotlib
+pip install yacs kornia robpy
 ```
+- Install `torchsearchsorted`: https://github.com/aliutkus/torchsearchsorted.
 
 ### Datasets
 The walking and taekwondo datasets can be downloaded from [here](https://drive.google.com/drive/folders/13YHw_YSGewvcgYdwqbelM9L2JiPNWLi7?usp=sharing).
