@@ -53,18 +53,18 @@ python demo/taekwondo_demo.py -c configs/config_walking.yml
 If you use this code for your research, please cite our papers.
 ```
  @inproceedings{zhang2021stnerf,
-                       title={Editable Free-Viewpoint Video using a Layered Neural Representation},
-                       author={Jiakai, Zhang
-                               and Xinhang, Liu
-                               and Xinyi, Ye
-                               and Fuqiang, Zhao
-                               and Yanshun, Zhang
-                               and Minye, Wu
-                               and Yingliang, Zhang
-                               and Lan, Xu
-                               and Jingyi, Yu
-                               },
-         year={2021},
-         booktitle={ACM SIGGRAPH},
-        }
+                title={Editable Free-Viewpoint Video using a Layered Neural Representation},
+                author={Jiakai, Zhang
+                        and Xinhang, Liu
+                        and Xinyi, Ye
+                        and Fuqiang, Zhao
+                        and Yanshun, Zhang
+                        and Minye, Wu
+                        and Yingliang, Zhang
+                        and Lan, Xu
+                        and Jingyi, Yu
+                        },
+                year={2021},
+                booktitle={ACM SIGGRAPH},
+               }
 ```
