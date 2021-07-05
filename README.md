@@ -1,4 +1,4 @@
-# ST-NeRF in PyTorch
+# st-nerf in PyTorch
 
 We provide PyTorch implementations for our paper:
 [Editable Free-viewpoint Video Using a Layered Neural Representation](https://arxiv.org/abs/2104.14786)
@@ -17,14 +17,14 @@ Jiakai Zhang, Xinhang Liu, Xinyi Ye, Fuqiang Zhao, Yanshun Zhang, Minye Wu, Ying
 
 - Clone this repo:
 ```bash
-git clone https://github.com/DarlingHang/ST-NeRF
-cd ST-NeRF
+git clone https://github.com/DarlingHang/st-nerf
+cd st-nerf
 ```
 
 - Install [PyTorch](http://pytorch.org) and other dependencies using: 
 ```
-conda create -n ST-NeRF python=3.8.5
-conda activate ST-NeRF    
+conda create -n st-nerf python=3.8.5
+conda activate st-nerf    
 conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
 conda install imageio matplotlib
 pip install yacs kornia robpy
