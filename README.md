@@ -1,4 +1,4 @@
-# st-nerf in PyTorch
+# st-nerf
 
 We provide PyTorch implementations for our paper:
 [Editable Free-viewpoint Video Using a Layered Neural Representation](https://arxiv.org/abs/2104.14786)
