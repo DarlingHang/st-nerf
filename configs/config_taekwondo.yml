@@ -1,0 +1,72 @@
+
+SOLVER:
+  OPTIMIZER_NAME: "Adam"
+  BASE_LR: 0.0004
+  WEIGHT_DECAY: 0.0000000
+  IMS_PER_BATCH: 2000
+  START_ITERS: 3000
+  END_ITERS: 60000
+  LR_SCALE: 0.09
+  WARMUP_ITERS: 1000
+
+  MAX_EPOCHS: 100
+  CHECKPOINT_PERIOD: 3000
+  LOG_PERIOD: 30
+  BUNCH: 3000
+  COARSE_STAGE: 1
+
+  BBOX_ID: 0
+
+INPUT:
+  # (4130,2202) / 4 = (1033,551) 
+  SIZE_TRAIN: [1920,1080]
+  SIZE_LAYER: [1920,1080]
+  SIZE_TEST: [1920,1080]
+
+DATASETS:
+  TRAIN: <LOCATION OF DATASET> 
+  TMP_RAYS: "rays_tmp_1920"
+  NUM_FRAME: 1
+  SHIFT: 0.0
+  MAXRATION: 0.0
+  ROTATION: 0.0
+  FACTOR: 8
+  FIXED_NEAR: -1.0
+  FIXED_FAR: -1.0
+  SCALE: 0.1 # scale in xyz position of world coordinate
+  FILE_OFFSET: 0
+  FRAME_OFFSET: 0
+  BKGD_SAMPLE_RATE: 0.05
+  
+  USE_LABEL: True
+  
+  USE_MASK: False
+
+  FRAME_NUM: 101 
+  LAYER_NUM: 2
+
+  
+  
+
+MODEL:
+  COARSE_RAY_SAMPLING: 90
+  FINE_RAY_SAMPLING: 30
+  SAMPLE_METHOD: "BBOX"       #  "NEAR_FAR"     "BBOX" 
+  BOARDER_WEIGHT: 1e10
+  SAME_SPACENET: False
+  TKERNEL_INC_RAW: True
+  POSE_REFINEMENT: False # If doing the camera pose refinement
+  USE_DIR: True
+  REMOVE_OUTLIERS: True # Use masks to remove the density out of the mask
+  USE_DEFORM_VIEW: False # Use deformnet to deform view inconsisdency
+  USE_DEFORM_TIME: True # Use deformnet to deform time inconsisdency
+  USE_SPACE_TIME: True
+  BKGD_USE_DEFORM_TIME: False
+  BKGD_USE_SPACE_TIME: False
+  DEEP_RGB: False
+
+
+TEST:
+  IMS_PER_BATCH: 1
+
+OUTPUT_DIR: "outputs/taekwondo"
