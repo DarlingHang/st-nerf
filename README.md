@@ -8,7 +8,7 @@ SIGGRAPH 2021
 Jiakai Zhang, Xinhang Liu, Xinyi Ye, Fuqiang Zhao, Yanshun Zhang, Minye Wu, Yingliang Zhang, Lan Xu and Jingyi Yu
 
 
-<img src="images/teaser-v4.pdf" width="800"/>
+<img src="images/teaser.jpg" width="800"/>
 
 **ST-NeRF: [Project](https://frankzhang0309.github.io/st-nerf/) |  [Paper](https://arxiv.org/abs/2104.14786)**
 
