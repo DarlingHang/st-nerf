@@ -62,4 +62,4 @@ MODEL:
 TEST:
   IMS_PER_BATCH: 1
 
-OUTPUT_DIR: "outputs/taekwondo"
+OUTPUT_DIR: "outputs/walking"
