@@ -10,7 +10,7 @@ Jiakai Zhang, Xinhang Liu, Xinyi Ye, Fuqiang Zhao, Yanshun Zhang, Minye Wu, Ying
 
 <img src="images/teaser.jpg" width="800"/>
 
-**ST-NeRF: [Project](https://frankzhang0309.github.io/st-nerf/) |  [Paper](https://arxiv.org/abs/2104.14786)**
+**st-nerf: [Project](jiakai-zhang.github.io/st-nerf) |  [Paper](https://arxiv.org/abs/2104.14786)**
 
 ## Getting Started
 ### Installation
