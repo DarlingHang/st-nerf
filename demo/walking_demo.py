@@ -37,32 +37,32 @@ torch.set_default_dtype(torch.float32)
 cfg.merge_from_file(args.config)
 cfg.freeze()
 
-nerual_renderer = LayeredNeuralRenderer(cfg)
+neural_renderer = LayeredNeuralRenderer(cfg)
 
 
 density_threshold = 20 # Can be set to higher to hide glass
 bkgd_density_threshold = 0.8 
 inverse_y_axis = False # For some y-inversed model
 
-nerual_renderer.set_fps(25)
-nerual_renderer.set_pose_duration(1,14) # [ min , max )
-nerual_renderer.set_smooth_path_poses(100, around=False)
-nerual_renderer.set_near(4)
-nerual_renderer.invert_poses()
+neural_renderer.set_fps(25)
+neural_renderer.set_pose_duration(1,14) # [ min , max )
+neural_renderer.set_smooth_path_poses(100, around=False)
+neural_renderer.set_near(4)
+neural_renderer.invert_poses()
 
 
-nerual_renderer.set_save_dir("origin")
-nerual_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
-nerual_renderer.save_video()
+neural_renderer.set_save_dir("origin")
+neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
+neural_renderer.save_video()
 
 
-nerual_renderer.hide_layer(1)
-nerual_renderer.set_save_dir("hide_man_1")
-nerual_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
-nerual_renderer.save_video()
+neural_renderer.hide_layer(1)
+neural_renderer.set_save_dir("hide_man_1")
+neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
+neural_renderer.save_video()
 
 
-nerual_renderer.hide_layer(2)
-nerual_renderer.set_save_dir("hide_both")
-nerual_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
-nerual_renderer.save_video()
+neural_renderer.hide_layer(2)
+neural_renderer.set_save_dir("hide_both")
+neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
+neural_renderer.save_video()
