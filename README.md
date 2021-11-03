@@ -40,11 +40,11 @@ The walking and taekwondo datasets can be downloaded from [here](https://drive.g
 - To run our demo scripts, you need to first downloaded the corresponding dataset, and put them under the folder specified by `DATASETS` -> `TRAIN` in `configs/config_taekwondo.yml` and `configs/config_walking.yml`
 - For the walking sequence, you can render videos where some performers are hided by typing the command:
 ```
-python demo/walking_demo.py -c configs/config_taekwondo.yml
+python demo/walking_demo.py -c configs/config_walking.yml
 ```
 - For the taekwondo sequence, you can render videos where performers are translated and scaled by typing the command:
 ```
-python demo/taekwondo_demo.py -c configs/config_walking.yml
+python demo/taekwondo_demo.py -c configs/config_taekwondo.yml
 ```
 - The rendered images and videos will be under `outputs/taekwondo/rendered` and `outputs/walking/rendered`
 
