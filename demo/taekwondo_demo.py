@@ -35,23 +35,26 @@ torch.set_default_dtype(torch.float32)
 
 cfg.merge_from_file(args.config)
 cfg.freeze()
+for i in range(15):
+    neural_renderer = LayeredNeuralRenderer(cfg)
 
-neural_renderer = LayeredNeuralRenderer(cfg)
+    # key_frames_layer_1 = [21,49,74,87] # performer 1 time line
+    # key_frames_layer_2 = [13,42,80,90] # performer 2 time line
+    # key_frames = [20,50,74,85] # new time line
+    density_threshold = 0 # Can be set to higher to hide glass
+    inverse_y_axis = False # For some y-inversed model
+    neural_renderer = LayeredNeuralRenderer(cfg)
+    neural_renderer.set_save_dir('origin')
+    # neural_renderer.retime_by_key_frames(1, key_frames_layer_1, key_frames)
+    # neural_renderer.retime_by_key_frames(2, key_frames_layer_2, key_frames)
+    neural_renderer.set_fps(25)
+    neural_renderer.set_save_count(i)
+    neural_renderer.set_pose_duration(i,14) # [ min , max )
+    neural_renderer.set_smooth_path_poses(101, around=False)
+    neural_renderer.render_path(inverse_y_axis,density_threshold,auto_save=True)
+    # neural_renderer.save_video()
 
-key_frames_layer_1 = [21,49,74,87] # performer 1 time line
-key_frames_layer_2 = [13,42,80,90] # performer 2 time line
-key_frames = [20,50,74,85] # new time line
-density_threshold = 0 # Can be set to higher to hide glass
-inverse_y_axis = False # For some y-inversed model
-neural_renderer = LayeredNeuralRenderer(cfg)
-neural_renderer.set_save_dir('origin')
-neural_renderer.retime_by_key_frames(1, key_frames_layer_1, key_frames)
-neural_renderer.retime_by_key_frames(2, key_frames_layer_2, key_frames)
-neural_renderer.set_fps(25)
-neural_renderer.set_smooth_path_poses(101, around=False)
-neural_renderer.render_path(inverse_y_axis,density_threshold,auto_save=True)
-neural_renderer.save_video()
-
+'''#
 neural_renderer = LayeredNeuralRenderer(cfg, shift=[[0,0,0],[0,2,0],[0,-2,0]])
 neural_renderer.set_save_dir('shift')
 neural_renderer.retime_by_key_frames(1, key_frames_layer_1, key_frames)
@@ -70,4 +73,4 @@ neural_renderer.set_fps(25)
 neural_renderer.set_smooth_path_poses(101, around=False)
 neural_renderer.render_path(inverse_y_axis,density_threshold,auto_save=True)
 neural_renderer.save_video()
-
+'''

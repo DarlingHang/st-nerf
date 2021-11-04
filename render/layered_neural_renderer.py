@@ -8,6 +8,7 @@ from modeling import build_layered_model
 from utils import layered_batchify_ray, add_two_dim_dict
 from .render_functions import *
 from robopy import *
+import time
 
 from scipy.spatial.transform import Rotation as R
 from scipy.spatial.transform import Slerp 
@@ -93,6 +94,10 @@ class LayeredNeuralRenderer:
         # auto saving dir
         self.dir_name = ''
 
+    def set_save_count(self, cnt):
+        self.save_count = cnt
+
+
     def load_dataset_model(self):
         para_file = get_iteration_path(self.dataset_dir)
         print(para_file)
@@ -104,8 +109,8 @@ class LayeredNeuralRenderer:
         
         model = build_layered_model(cfg, dataset.camera_num, scale = self.scale, shift=self.shift)
         
-        model.set_bkgd_bbox(dataset.datasets[0][0].bbox)
-        model.set_bboxes(dataset.bboxes)
+        model.set_bkgd_bbox(dataset.datasets[0][0].bbox)    # frame0 layer0 's bbox  From pointcloud
+        model.set_bboxes(dataset.bboxes)        # human's bbox  From pointscloud
         model_dict = model.state_dict()
         dict_0 = torch.load(os.path.join(para_file),map_location='cuda')
 
@@ -251,28 +256,23 @@ class LayeredNeuralRenderer:
         if not around:
             temp = [Rs[0],Rs[-1]]
             Rs = np.array(temp)
-            key_frames = [self.min_camera_id,self.max_camera_id]
+            # key_frames = [self.min_camera_id,self.max_camera_id]
 
-        # key_frames = [i for i in range(self.min_camera_id,self.max_camera_id)]
-        # key_frames = [self.min_camera_id,self.max_camera_id-1]
+        # interp_frames = [(i * (self.max_camera_id-self.min_camera_id) / (step_num-1) + self.min_camera_id) for i in range(step_num)]
 
-        interp_frames = [(i * (self.max_camera_id-self.min_camera_id) / (step_num-1) + self.min_camera_id) for i in range(step_num)]
-        #print(interp_frames)
-        # print(interp_frames)
-        Rs = R.from_matrix(Rs)
-        slerp = Slerp(key_frames, Rs)
-        interp_Rs = slerp(interp_frames).as_matrix()
-        #print(interp_Rs)
+        # Rs = R.from_matrix(Rs)
+        # slerp = Slerp(key_frames, Rs)
+        # interp_Rs = slerp(interp_frames).as_matrix()
 
-        x = Ts[:,0]
-        y = Ts[:,1]
-        z = Ts[:,2]
+        # x = Ts[:,0]
+        # y = Ts[:,1]
+        # z = Ts[:,2]
 
-        tck, u0 = splprep([x,y,z])
-        u_new = [i / (step_num-1)  for i in range(step_num)]
-        new_points = splev(u_new,tck)
+        # tck, u0 = splprep([x,y,z])
+        # u_new = [i / (step_num-1)  for i in range(step_num)]
+        # new_points = splev(u_new,tck)
 
-        new_points = np.stack(new_points, axis=1)
+        # new_points = np.stack(new_points, axis=1)
 
         K0 = self.gt_Ks[self.min_camera_id]
         K1 = self.gt_Ks[self.max_camera_id]
@@ -284,15 +284,14 @@ class LayeredNeuralRenderer:
             self.s_scale_frame = []
         for i in range(step_num):
             pose = np.zeros((4,4))
-            pose[:3,:3] = interp_Rs[i]
-            pose[:3,3] = new_points[i]
+            pose[:3,:3] = Rs[0]
+            pose[:3,3] = Ts[0]
             pose[3,3] = 1
             poses.append(pose)
 
-            K = (K1 - K0) * i / (step_num - 1) + K0
-
-            # print(K)
-
+            # K = (K1 - K0) * i / (step_num - 1) + K0
+            K = K0
+        
             self.Ks.append(K)
             if self.s_scale != None:
                 self.s_scale_frame.append((s_scale_start+i*s_scale_step).tolist())
@@ -367,8 +366,10 @@ class LayeredNeuralRenderer:
         #print(K)
         H = self.dataset.height
         W = self.dataset.width
+
         rays, labels, bbox, near_far = self.dataset.get_rays_by_pose_and_K(pose, K, layer_frame_pair)
-            
+
+
         rays = rays.cuda()
         bbox = bbox.cuda()
         labels = labels.cuda()
@@ -403,7 +404,7 @@ class LayeredNeuralRenderer:
         if self.dir_name == '':
             save_dir = os.path.join(self.output_dir,'video_%d' % self.save_count,'mixed')
         else:
-            save_dir = os.path.join(self.output_dir,self.dir_name,'video_%d' % self.save_count,'mixed')
+            save_dir = os.path.join(self.output_dir,self.dir_name,'cam%d' % self.save_count,'mixed')
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
             os.mkdir(os.path.join(save_dir,'color'))
@@ -411,7 +412,7 @@ class LayeredNeuralRenderer:
 
         file_poses = open(os.path.join(save_dir,'poses'),mode='w')
         for pose in self.poses:
-            file_poses.write(str(pose)+"\n")	
+            file_poses.write(str(pose)+"\n")
         file_poses.close()
         
         file_Ks = open(os.path.join(save_dir,'Ks'),mode='w')
@@ -426,7 +427,7 @@ class LayeredNeuralRenderer:
         self.depths_layer = [[] for i in range(self.layer_num+1)]
 
         self.image_num = 0
-
+        
         for idx in range(len(self.poses)):
             print('Rendering image %d' % idx)
             K = self.Ks[idx]
@@ -454,21 +455,12 @@ class LayeredNeuralRenderer:
             depth_layer = [i.cpu() for i in depth_layer]
 
             if auto_save:
-                if self.dir_name == '':
-                    save_dir = os.path.join(self.output_dir,'video_%d' % self.save_count,'mixed')
-                else:
-                    save_dir = os.path.join(self.output_dir,self.dir_name,'video_%d' % self.save_count,'mixed')
-                if not os.path.exists(save_dir):
-                    os.makedirs(save_dir)
-                    os.mkdir(os.path.join(save_dir,'color'))
-                    os.mkdir(os.path.join(save_dir,'depth'))
-
                 #print(rgb.shape)
                 imageio.imwrite(os.path.join(save_dir,'color','%d.jpg'% self.image_num), color)
                 imageio.imwrite(os.path.join(save_dir,'depth','%d.png'% self.image_num), depth)
                 self.images.append(color)
                 self.depths.append(depth)
-                for layer_id in range(self.layer_num+1):
+                '''for layer_id in range(self.layer_num+1):
                     if self.is_shown_layer(layer_id):
                         if self.dir_name == '':
                             save_dir = os.path.join(self.output_dir,'video_%d' % self.save_count,str(layer_id))
@@ -483,10 +475,9 @@ class LayeredNeuralRenderer:
                         imageio.imwrite(os.path.join(save_dir,'depth','%d.png'% self.image_num), depth_layer[layer_id])
                         self.images_layer[layer_id].append(color)
                         self.depths_layer[layer_id].append(depth)
-            
-
-            self.image_num += 1
-
+                '''
+                self.image_num += 1
+        
 
 
 

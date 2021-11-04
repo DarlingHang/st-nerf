@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 
 sys.path.append('..')
 from config import cfg
-from engine.layered_trainer import do_train
-from modeling import build_model
+from engine.layered_trainer import do_train, do_evaluate
+#from modeling import build_model
 from solver import make_optimizer, WarmupMultiStepLR,build_scheduler
 from layers import make_loss
 from utils.logger import setup_logger
@@ -37,25 +37,28 @@ torch.set_default_dtype(torch.float32)
 cfg.merge_from_file(args.config)
 cfg.freeze()
 
-neural_renderer = LayeredNeuralRenderer(cfg)
+for i in range(16):
+    neural_renderer = LayeredNeuralRenderer(cfg)
 
+    density_threshold = 20 # Can be set to higher to hide glass
+    bkgd_density_threshold = 0.8 
+    inverse_y_axis = False # For some y-inversed model
 
-density_threshold = 20 # Can be set to higher to hide glass
-bkgd_density_threshold = 0.8 
-inverse_y_axis = False # For some y-inversed model
+    neural_renderer.set_fps(25)
+    #neural_renderer.set_near(0.1)
 
-neural_renderer.set_fps(25)
-neural_renderer.set_pose_duration(1,14) # [ min , max )
-neural_renderer.set_smooth_path_poses(100, around=False)
-neural_renderer.set_near(4)
-neural_renderer.invert_poses()
+    neural_renderer.set_save_count(i)
+    neural_renderer.set_pose_duration(i,15) # [ min , max )
+    neural_renderer.set_smooth_path_poses(75, around=False)
+    neural_renderer.invert_poses()
 
+    #do_evaluate(neural_renderer.model, neural_renderer.dataset)
 
-neural_renderer.set_save_dir("origin")
-neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
-neural_renderer.save_video()
+    neural_renderer.set_save_dir("origin")
+    neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
+    # neural_renderer.save_video()
 
-
+'''
 neural_renderer.hide_layer(1)
 neural_renderer.set_save_dir("hide_man_1")
 neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
@@ -66,3 +69,4 @@ neural_renderer.hide_layer(2)
 neural_renderer.set_save_dir("hide_both")
 neural_renderer.render_path(inverse_y_axis,density_threshold,bkgd_density_threshold,auto_save=True)
 neural_renderer.save_video()
+'''
