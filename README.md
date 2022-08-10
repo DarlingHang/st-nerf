@@ -32,7 +32,7 @@ pip install yacs kornia robpy
 
 
 ### Datasets
-The walking and taekwondo datasets can be downloaded from [here](https://drive.google.com/drive/folders/13YHw_YSGewvcgYdwqbelM9L2JiPNWLi7?usp=sharing).
+The walking and taekwondo datasets can be downloaded from [here](https://www.dropbox.com/s/64tmp3db2ec24w8/walking.zip?dl=0).
 
 ### Apply a pre-trained model to render demo videos
 - We provide our pretrained models which can be found under the `outputs` folder.
