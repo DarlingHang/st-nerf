@@ -54,19 +54,14 @@ We borrowed some codes from [Multi-view Neural Human Rendering (NHR)](https://gi
 ## Citation
 If you use this code for your research, please cite our papers.
 ```
- @inproceedings{zhang2021stnerf,
-                title={Editable Free-Viewpoint Video using a Layered Neural Representation},
-                author={Jiakai, Zhang
-                        and Xinhang, Liu
-                        and Xinyi, Ye
-                        and Fuqiang, Zhao
-                        and Yanshun, Zhang
-                        and Minye, Wu
-                        and Yingliang, Zhang
-                        and Lan, Xu
-                        and Jingyi, Yu
-                        },
-                year={2021},
-                booktitle={ACM SIGGRAPH},
-               }
+@article{zhang2021editable,
+  title={Editable free-viewpoint video using a layered neural representation},
+  author={Zhang, Jiakai and Liu, Xinhang and Ye, Xinyi and Zhao, Fuqiang and Zhang, Yanshun and Wu, Minye and Zhang, Yingliang and Xu, Lan and Yu, Jingyi},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={40},
+  number={4},
+  pages={1--18},
+  year={2021},
+  publisher={ACM New York, NY, USA}
+}
 ```
